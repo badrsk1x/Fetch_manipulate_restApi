@@ -4,7 +4,6 @@
  */
 namespace App\Core;
 
-
 /**
  * Slim's default DI container is Pimple.
  *
@@ -48,7 +47,7 @@ class Container extends \Pimple\Container implements \Psr\Container\ContainerInt
      *
      * @return void
      */
-     private function registerDefaultServices($userSettings)
+    private function registerDefaultServices($userSettings)
     {
         $defaultSettings = $this->defaultSettings;
 
@@ -61,7 +60,6 @@ class Container extends \Pimple\Container implements \Psr\Container\ContainerInt
         $this['settings'] = function () use ($userSettings, $defaultSettings) {
             return new Collection(array_merge($defaultSettings, $userSettings));
         };
-
     }
 
     /********************************************************************************
@@ -81,7 +79,7 @@ class Container extends \Pimple\Container implements \Psr\Container\ContainerInt
     public function get($id)
     {
         if (!$this->offsetExists($id)) {
-            throw new \Exception (sprintf('Identifier "%s" is not defined.', $id));
+            throw new \Exception(sprintf('Identifier "%s" is not defined.', $id));
         }
         try {
             return $this->offsetGet($id);

@@ -34,14 +34,14 @@ class Curl
     public $id;
 
     private $jsonPattern = '/^(?:application|text)\/(?:[a-z]+(?:[\.-][0-9a-z]+){0,}[\+\.]|x-)?json(?:-[a-z]+)?/i';
-	
-	 /**
-     * Construct
-     *
-     * @access public
-     * @param  $base_url
-     * @throws \ErrorException
-     */
+    
+    /**
+    * Construct
+    *
+    * @access public
+    * @param  $base_url
+    * @throws \ErrorException
+    */
     public function __construct($base_url = null)
     {
         if (!extension_loaded('curl')) {
@@ -49,11 +49,10 @@ class Curl
         }
 
         $this->curl = curl_init();
-        if ($this->curl === FALSE)
-		{
-			throw new \Exception(_('cURL error: Initialization failed'));
-		}
-		
+        if ($this->curl === false) {
+            throw new \Exception(_('cURL error: Initialization failed'));
+        }
+        
         $this->initialize($base_url);
     }
 
@@ -76,22 +75,22 @@ class Curl
         $this->setOpt(CURLOPT_HTTPHEADER, $headers);
     }
 
-     /**
-     * Post
-     *
-     * @access public
-     * @param  $url
-     * @param  $data
-     */
+    /**
+    * Post
+    *
+    * @access public
+    * @param  $url
+    * @param  $data
+    */
     public function post($url, $data = '')
-    { 
+    {
         $this->setUrl($url);
         $this->setOpt(CURLOPT_POST, true);
         $this->setOpt(CURLOPT_POSTFIELDS, $this->buildPostData($data));
         return $this->exec();
     }
 
-     /**
+    /**
     * Get
     *
     * @access public
@@ -100,13 +99,13 @@ class Curl
     *
     * @return mixed Returns the value provided by exec.
     */
-   public function get($url, $data = array())
-   { 
-       $this->setUrl($url, $data);
-       $this->setOpt(CURLOPT_CUSTOMREQUEST, 'GET');
-       $this->setOpt(CURLOPT_HTTPGET, true);
-       return $this->exec();
-   }
+    public function get($url, $data = array())
+    {
+        $this->setUrl($url, $data);
+        $this->setOpt(CURLOPT_CUSTOMREQUEST, 'GET');
+        $this->setOpt(CURLOPT_HTTPGET, true);
+        return $this->exec();
+    }
 
     /**
      * Build Post Data
@@ -134,8 +133,8 @@ class Curl
         } elseif (is_array($data)) {
             /*
              in the test task, mentioned that only json will be used, that`s why i did not code this part
-            but it have to be done in real project 
-            TO-DO 
+            but it have to be done in real project
+            TO-DO
             */
         }
 
@@ -151,19 +150,19 @@ class Curl
      * @param  $options
      */
     public function setDefaultJsonDecoder()
-    { 
+    {
         $this->jsonDecoder = '\App\Core\Decoder::decodeJson';
         $this->jsonDecoderArgs = func_get_args();
     }
 
-     /**
-     * Exec
-     *
-     * @access public
-     * @param  $ch
-     *
-     * @return mixed Returns the value provided by parseResponse.
-     */
+    /**
+    * Exec
+    *
+    * @access public
+    * @param  $ch
+    *
+    * @return mixed Returns the value provided by parseResponse.
+    */
     public function exec($ch = null)
     {
         $this->attempts += 1;
@@ -265,9 +264,9 @@ class Curl
     private function parseResponse($raw_response)
     {
         $response = $raw_response;
-                    $args = $this->jsonDecoderArgs;
-                    array_unshift($args, $response);
-                    $response = call_user_func_array($this->jsonDecoder, $args);                
+        $args = $this->jsonDecoderArgs;
+        array_unshift($args, $response);
+        $response = call_user_func_array($this->jsonDecoder, $args);
         return $response;
     }
 
@@ -305,11 +304,11 @@ class Curl
     }
 
 
-     /**
-     * Call
-     *
-     * @access public
-     */
+    /**
+    * Call
+    *
+    * @access public
+    */
     public function call()
     {
         $args = func_get_args();
@@ -320,7 +319,7 @@ class Curl
         }
     }
 
-      /**
+    /**
      * Set Opt
      *
      * @access public
@@ -331,7 +330,6 @@ class Curl
      */
     public function setOpt($option, $value)
     {
-        
         $success = curl_setopt($this->curl, $option, $value);
         if ($success) {
             $this->options[$option] = $value;
@@ -339,12 +337,12 @@ class Curl
         return $success;
     }
 
-     /**
-     * Set User Agent
-     *
-     * @access public
-     * @param  $user_agent
-     */
+    /**
+    * Set User Agent
+    *
+    * @access public
+    * @param  $user_agent
+    */
     public function setUserAgent($user_agent)
     {
         $this->setOpt(CURLOPT_USERAGENT, $user_agent);
@@ -365,7 +363,7 @@ class Curl
         $this->setUserAgent($user_agent);
     }
 
-      /**
+    /**
      * Set Default Timeout
      *
      * @access public
@@ -386,13 +384,13 @@ class Curl
     {
         $this->setOpt(CURLOPT_TIMEOUT, $seconds);
     }
-     /**
-     * Set Url
-     *
-     * @access public
-     * @param  $url
-     * @param  $mixed_data
-     */
+    /**
+    * Set Url
+    *
+    * @access public
+    * @param  $url
+    * @param  $mixed_data
+    */
     public function setUrl($url, $mixed_data = '')
     {
         $built_url = $this->buildUrl($url, $mixed_data);
@@ -466,7 +464,8 @@ class Curl
  *
  * @return callable
  */
-function createHeaderCallback($header_callback_data) {
+function createHeaderCallback($header_callback_data)
+{
     return function ($ch, $header) use ($header_callback_data) {
         if (preg_match('/^Set-Cookie:\s*([^=]+)=([^;]+)/mi', $header, $cookie) === 1) {
             $header_callback_data->responseCookies[$cookie[1]] = trim($cookie[2], " \n\r\t\0\x0B");
@@ -475,4 +474,3 @@ function createHeaderCallback($header_callback_data) {
         return strlen($header);
     };
 }
-

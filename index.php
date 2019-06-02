@@ -11,7 +11,7 @@ use LucidFrame\Console\ConsoleTable as ConsoleTable ;
 #config file
 $config   = include 'config/config.php';
 
-// step 1 : We initialize our app with the config parameters 
+// step 1 : We initialize our app with the config parameters
 $app = new App(["settings" => $config]);
 // step 2 : Let s fetch our posts
 $posts = $app->fetchPosts();
@@ -27,42 +27,40 @@ $avgUserStats = $stats->getUserPostAverage();
 
 
     /**************************************************************************
-     * show the monthly statistics in a table in console 
+     * show the monthly statistics in a table in console
      **************************************************************************/
 
 $table1 = new ConsoleTable;
 $table1->addHeader('Months')
         ->addHeader('Average characters')
         ->addHeader('longest characters');
-foreach($avgStats->data as $key=>$data) {
+foreach ($avgStats->data as $key=>$data) {
     $table1->addRow()
            ->addColumn(date('F', mktime(0, 0, 0, $key, 10)))
-           ->addColumn(round($data->Avg,3))
+           ->addColumn(round($data->Avg, 3))
            ->addColumn($data->Max);
 }
 $table1->display();
 
 
-// show the weekly posts in a table in console 
+// show the weekly posts in a table in console
 $table2 = new ConsoleTable;
 $table2->addHeader('Week')
       ->addHeader('Total posts');
-      foreach($weeklyPosts->data as $w=>$posts)
-      {
+      foreach ($weeklyPosts->data as $w=>$posts) {
           $table2->addRow()
           ->addColumn($w)
           ->addColumn($posts);
       }
 $table2->display();
 
-// show the average user posts by month in a table in console 
+// show the average user posts by month in a table in console
 $table3 = new ConsoleTable;
 $table3->addHeader('Month')
       ->addHeader('Average number of posts per user');
-      foreach($avgUserStats->data as $key=>$data)
-      {
+      foreach ($avgUserStats->data as $key=>$data) {
           $table3->addRow()
           ->addColumn(date('F', mktime(0, 0, 0, $key, 10)))
-          ->addColumn(round($data->Avg,3));
+          ->addColumn(round($data->Avg, 3));
       }
 $table3->display();

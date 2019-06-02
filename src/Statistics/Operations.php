@@ -1,6 +1,8 @@
 <?php
 namespace App\Statistics;
+
 use \Exception;
+
 /**
  * Statistical averages
  */
@@ -20,26 +22,25 @@ class Operations
      * @throws Exception if the input array of numbers is empty
      */
     public static function mean(array $numbers): float
-    { 
+    {
         if (empty($numbers)) {
             throw new Exception('Cannot find the average of an empty list of numbers');
         }
         return array_sum($numbers) / count($numbers);
     }
 
-     /**
-     * Calculate the max of a list of numbers
-     * @param float[] $numbers
-     *
-     * @return float
-     */ 
+    /**
+    * Calculate the max of a list of numbers
+    * @param float[] $numbers
+    *
+    * @return float
+    */
 
-    public static function max(array $numbers): float 
+    public static function max(array $numbers): float
     {
         if (empty($numbers)) {
             throw new Exception('Cannot find the max of an empty list of numbers');
         }
         return max($numbers);
     }
-
 }
