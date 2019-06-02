@@ -125,7 +125,7 @@ class PostsStatistics extends Operations
         $ws = [];
         foreach ($this->posts as $post) {
             $w = $this->getDateByType('W', $post) ;
-            array_key_exists($w, $ws) ? $ws[$w]++ : $ws[$w]=0 ;
+            array_key_exists($w, $ws) ? $ws[$w]++ : $ws[$w]=1 ;
         }
         return $ws;
     }
@@ -143,7 +143,7 @@ class PostsStatistics extends Operations
             $uid = $post->from_id;
             array_key_exists($n, $us) && array_key_exists($uid, $us[$n])
             ? $us[$n][$uid]++
-            : $us[$n][$uid] = 0;
+            : $us[$n][$uid] = 1;
         }
         return $us;
     }
